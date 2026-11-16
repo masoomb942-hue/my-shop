@@ -79,13 +79,12 @@
       document.querySelector('#checkoutSummary').innerHTML = `<h3>Order summary</h3>${lines.map(x => `<div class="summaryline"><span>${x.product.name} × ${x.qty} (${x.size})</span><b>${money(x.product.price * x.qty)}</b></div>`).join('')}<hr><div class="summaryline"><b>Total to pay on delivery</b><b>${money(total)}</b></div>`;
       form.addEventListener('submit', async e => {
         e.preventDefault();
-        if (!window.novaraSupabaseReady?.()) { alert('NOVARA online ordering is not configured yet. Please contact the store owner.'); return; }
         const button = form.querySelector('button[type="submit"]'); button.disabled = true; button.textContent = 'Placing order…';
         const f = new FormData(form), customer = Object.fromEntries(f.entries());
         const order = { number: 'NV' + Date.now().toString().slice(-8), customer, items: lines.map(x => ({ id: x.id, name: x.product.name, price: x.product.price, size: x.size, image: x.product.image, qty: x.qty })), total };
-        const db = window.novaraDb();
-        const { error } = await db.from('orders').insert({ order_number: order.number, customer_name: customer.name, phone: customer.phone, email: customer.email || null, address: customer.address, city: customer.city, postal_code: customer.postal || null, payment_method: 'COD', items: order.items, total: order.total });
-        if (error) { alert('Order could not be submitted: ' + error.message); button.disabled = false; button.textContent = 'Place COD order'; return; }
+        
+  
+      
         const waMsg = `New Order - NOVARA\n\nOrder No: ${order.number}\nName: ${customer.name}\nPhone: ${customer.phone}\nAddress: ${customer.address}\n\nTotal: Rs ${total}`;
         waMsg += "\nPhotos: " + lines.map(x => x.image).join(" , ");
         window.open(`https://wa.me/923172598619?text=${encodeURIComponent(waMsg)}`, '_blank');
