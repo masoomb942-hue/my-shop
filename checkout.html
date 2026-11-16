@@ -87,8 +87,9 @@
       
         const waMsg = `New Order - NOVARA\n\nOrder No: ${order.number}\nName: ${customer.name}\nPhone: ${customer.phone}\nAddress: ${customer.address}\n\nTotal: Rs ${total}`;
         waMsg += "\nPhotos: " + lines.map(x => x.image).join(" , ");
-        window.open(`https://wa.me/923172598619?text=${encodeURIComponent(waMsg)}`, '_blank');
-        localStorage.setItem('novaraLastOrder', JSON.stringify(order)); localStorage.setItem('novaraCart', '[]'); location.href = 'confirmation.html';
+
+        window.location.href = `https://wa.me/923172598619?text=${encodeURIComponent(waMsg)}`;
+        localStorage.setItem('novaraLastOrder', JSON.stringify(order)); localStorage.setItem('novaraCart', '[]'); 
       });
     })();
   </script>
