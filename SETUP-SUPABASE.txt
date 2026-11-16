@@ -1,0 +1,31 @@
+NOVARA ONLINE STORE SETUP (Supabase)
+===================================
+This project now includes an admin dashboard and Supabase integration scaffold. It is NOT live until you complete the setup below and test it.
+
+1) Create a Supabase project at https://supabase.com/ (choose a strong database password and keep it private).
+2) In Supabase, open SQL Editor, paste the complete contents of supabase-schema.sql, and run it.
+3) Open Project Settings > API. Copy the Project URL and anon/public key.
+4) Open supabase-config.js and replace:
+   PASTE_SUPABASE_PROJECT_URL_HERE
+   PASTE_SUPABASE_ANON_KEY_HERE
+   Only use the anon/public key in browser code. NEVER put a service_role or secret key in this folder.
+5) In Supabase Authentication, create an admin user with an email and strong password.
+6) In Authentication > Users, copy that user's UUID. In SQL Editor run:
+   insert into public.admin_users (user_id) values ('PASTE-USER-UUID-HERE');
+7) Open admin.html on your local development server and sign in. The admin account can add/edit/delete products and view/update orders.
+8) Add products in Admin. Storefront reads active products from Supabase. Current demo products are only a fallback until database products are added.
+9) Test a COD order using a test phone/address first. Confirm it appears in Admin > Orders and test order status updates.
+10) Only after testing, publish the entire folder to a static host with HTTPS. Keep the SQL and setup notes private; never share admin credentials.
+
+SECURITY NOTES
+- Row Level Security is enabled in the schema.
+- Only UUIDs explicitly inserted into admin_users are authorized as admins.
+- Public visitors can view active products and submit COD orders; they cannot view orders or manage products.
+- Do not add a service_role key to any HTML/JS file.
+- Real customer names, phone numbers and addresses are personal data. Restrict admin access and do not share the orders table publicly.
+
+PROJECT NOTES
+- Store categories are set to T-Shirts and Pants, matching the NOVARA Drop 01 scope.
+- COD only. Payment gateway is not configured.
+- Product images are entered as image URLs in this first admin version. Image upload/storage can be added after the database is connected.
+- Add your real delivery charges, return policy, contact number and social links before publishing.
